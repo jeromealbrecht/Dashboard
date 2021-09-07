@@ -1,6 +1,6 @@
 # Infos projet
 
-Je souhaite instancier en premier Firebase poour assurer l'envoi et receptions de données. 
+Je souhaite instancier en premier Firebase pour assurer l'envoi et receptions de données. 
 
 J'ai suivi la doc officielle
 
