@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useState} from 'react';
 import 'semantic-ui-css/semantic.min.css';
-// import { Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
