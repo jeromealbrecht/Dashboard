@@ -45,7 +45,7 @@ function App() {
         <div className="col-12 gradient row m-0">
         <div className="col-2 cardColor height mt-3 mb-3">cc</div>
           <div className="col-9 mt-3 mb-3 row space">          
-          <h1 className="p-4 text-white text-center">Bienvenue sur votre Dashboard </h1>
+          <h1 className="p-4 text-white text-center">Bienvenue sur votre Dashboard</h1>
 
           <div className="col-2 height2 hexagon ml-3 text-center middle"><Icon disabled name='cloud upload' className="" size='big' color='red' /></div>
           <div className="col-2 cardColor height2"><Icon disabled name='assistive listening systems' size={150} /></div>
