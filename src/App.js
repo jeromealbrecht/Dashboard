@@ -7,35 +7,36 @@ import { Icon } from 'semantic-ui-react';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase } from "firebase/database";
 import { getDatabase, ref, set } from "firebase/database";
+import { doc, setDoc } from "firebase/firestore"; 
 
 const database = getDatabase();
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDYRZBURVTMEMq7bEYMqaTmhm6b5sHxJmw",
-  authDomain: "backad-59c60.firebaseapp.com",
-  projectId: "backad-59c60",
-  storageBucket: "backad-59c60.appspot.com",
-  messagingSenderId: "692325332308",
-  appId: "1:692325332308:web:2c9e6b2d73ddc254dcc4c1",
-  measurementId: "G-EZZN5QYFQR"
-};
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+
+
+const firebaseConfig = {
+// ... config
+};
+
 const analytics = getAnalytics(app);
+const app = initializeApp(firebaseConfig);
+
 
 function App() {
-  // const [value, setValue] = useState('');
+  const [value, setValue] = useState('');
 
-function writeUserData(userId, title, describe, imageUrl) {
-  const db = getDatabase();
-  set(ref(db, 'User/' + userId), {
-    title: "name",
-    describe: "lorem",
-    imageUrl : imageUrl
-  });
-}
+  const addTodo = async () => {
+    await setDoc(doc(db, "Users"), { //here Line 36:22:  'db' is not defined  no-undef, how to define it ? 
+      title: "Los Angeles",
+      describe: "CA",
+      imageURL: "USA"
+    });
+    setValue('')
+  }
+
+  console.log(value);
+
 
   return (
     
@@ -47,7 +48,7 @@ function writeUserData(userId, title, describe, imageUrl) {
           <h1 className="p-4 text-white text-center">Bienvenue sur votre Dashboard </h1>
 
           <div className="col-2 height2 hexagon ml-3 text-center middle"><Icon disabled name='cloud upload' className="" size='big' color='red' /></div>
-          <div className="col-2 cardColor height2" onClick={writeUserData}><Icon disabled name='assistive listening systems' size={150} /></div>
+          <div className="col-2 cardColor height2"><Icon disabled name='assistive listening systems' size={150} /></div>
           <div className="col-2 cardColor height2"></div>
           <div className="col-2 cardColor height2"></div>
           <div className="col-2 cardColor height2"></div>
