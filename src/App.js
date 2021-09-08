@@ -1,12 +1,16 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import { Icon } from 'semantic-ui-react';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getDatabase } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
+
+const database = getDatabase();
 
 const firebaseConfig = {
   apiKey: "AIzaSyDYRZBURVTMEMq7bEYMqaTmhm6b5sHxJmw",
@@ -17,12 +21,22 @@ const firebaseConfig = {
   appId: "1:692325332308:web:2c9e6b2d73ddc254dcc4c1",
   measurementId: "G-EZZN5QYFQR"
 };
-
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 function App() {
+  // const [value, setValue] = useState('');
+
+function writeUserData(userId, title, describe, imageUrl) {
+  const db = getDatabase();
+  set(ref(db, 'User/' + userId), {
+    title: "name",
+    describe: "lorem",
+    imageUrl : imageUrl
+  });
+}
+
   return (
     
     <div className="container-fluid">
@@ -33,7 +47,7 @@ function App() {
           <h1 className="p-4 text-white text-center">Bienvenue sur votre Dashboard </h1>
 
           <div className="col-2 height2 hexagon ml-3 text-center middle"><Icon disabled name='cloud upload' className="" size='big' color='red' /></div>
-          <div className="col-2 cardColor height2"><Icon disabled name='assistive listening systems' size={150} /></div>
+          <div className="col-2 cardColor height2" onClick={writeUserData}><Icon disabled name='assistive listening systems' size={150} /></div>
           <div className="col-2 cardColor height2"></div>
           <div className="col-2 cardColor height2"></div>
           <div className="col-2 cardColor height2"></div>
@@ -43,6 +57,7 @@ function App() {
         </div>
 
         </div>
+      </div>
       </div>
     );
 }
