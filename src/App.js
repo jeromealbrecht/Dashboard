@@ -3,39 +3,60 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useState, useEffect} from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import { Icon } from 'semantic-ui-react';
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, set } from "firebase/database";
-import { doc, setDoc } from "firebase/firestore"; 
+// https://firebase.google.com/docs/firestore/quickstart?hl=es#initialize
 
-const database = getDatabase();
+// Initialize Cloud Firestore through Firebase
 
-// Initialize Firebase
+import { initializeApp } from "firebase/app"
+
+import { getFirestore } from "firebase/firestore"
+
+const firebaseApp = initializeApp({
+
+  // ma config
+
+});
 
 
-const firebaseConfig = {
-// ... config
-};
 
-const analytics = getAnalytics(app);
-const app = initializeApp(firebaseConfig);
+const db = getFirestore();
 
+// Source: https://www.holadevs.com/pregunta/73106/error-firebase-db-is-not-defined
 
 function App() {
+  
   const [value, setValue] = useState('');
 
   const addTodo = async () => {
-    await setDoc(doc(db, "Users"), { //here Line 36:22:  'db' is not defined  no-undef, how to define it ? 
+    await setDoc(doc(db, "User", "user000"), {
       title: "Los Angeles",
       describe: "CA",
       imageURL: "USA"
     });
-    setValue('')
   }
 
-  console.log(value);
+  addTodo();
+
+  const getUser = async () => {
+    const docRef = doc(db, "User", "user000");
+    const docSnap = await getDoc(docRef);
+    
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
+  
+  useEffect(() => {
+    getUser()
+  }, []);
+
+
+
 
 
   return (
