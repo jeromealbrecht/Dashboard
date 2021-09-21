@@ -1,87 +1,36 @@
+import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {useState, useEffect} from 'react';
 import 'semantic-ui-css/semantic.min.css';
-import { Icon } from 'semantic-ui-react';
-import { doc, setDoc, getDoc } from "firebase/firestore"; 
-
-// https://firebase.google.com/docs/firestore/quickstart?hl=es#initialize
-
-// Initialize Cloud Firestore through Firebase
-
-import { initializeApp } from "firebase/app"
-
-import { getFirestore } from "firebase/firestore"
-
-const firebaseApp = initializeApp({
-
-  // ma config
-
-});
-
-
-
-const db = getFirestore();
+import MenuCard from './component/card';
+// import { useForm } from "react-hook-form";
+import { FiPlusCircle } from 'react-icons/fi';
 
 // Source: https://www.holadevs.com/pregunta/73106/error-firebase-db-is-not-defined
 
 function App() {
-  
-  const [value, setValue] = useState('');
+	return (
+		<div className="container-fluid bgColor h-75">
+			<div className="row">
+				<div className="col-12 row m-0">
+					<div className="col-md-1 cardColor mt-4 mb-3 text-center text-white p-absolute">
+						<h4 className="mt-3 mb-5"> Bienvenue </h4>
 
-  const addTodo = async () => {
-    await setDoc(doc(db, "User", "user000"), {
-      title: "Los Angeles",
-      describe: "CA",
-      imageURL: "USA"
-    });
-  }
+						<FiPlusCircle size={40} />
+						<p>Ajouter menu</p>
+						{/* <FiPlusCircle size={50}/> */}
+					</div>
+					<div className="col-10 mt-3 row space">
+						<h1 className="m-0 text-white text-center mb-5">Bienvenue sur votre Dashboard </h1>
 
-  addTodo();
-
-  const getUser = async () => {
-    const docRef = doc(db, "User", "user000");
-    const docSnap = await getDoc(docRef);
-    
-    if (docSnap.exists()) {
-      console.log("Document data:", docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-      console.log("No such document!");
-    }
-  }
-  
-  useEffect(() => {
-    getUser()
-  }, []);
-
-
-
-
-
-  return (
-    
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-12 gradient row m-0">
-        <div className="col-2 cardColor height mt-3 mb-3">cc</div>
-          <div className="col-9 mt-3 mb-3 row space">          
-          <h1 className="p-4 text-white text-center">Bienvenue sur votre Dashboard</h1>
-
-          <div className="col-2 height2 hexagon ml-3 text-center middle"><Icon disabled name='cloud upload' className="" size='big' color='red' /></div>
-          <div className="col-2 cardColor height2"><Icon disabled name='assistive listening systems' size={150} /></div>
-          <div className="col-2 cardColor height2"></div>
-          <div className="col-2 cardColor height2"></div>
-          <div className="col-2 cardColor height2"></div>
-          <div className="col-2 cardColor height2 offset+1"></div>
-          
-          <div className="col-10 cardColor"></div>
-        </div>
-
-        </div>
-      </div>
-      </div>
-    );
+						<div className="p-0 offset-1">
+							<MenuCard />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 }
 
 export default App;
