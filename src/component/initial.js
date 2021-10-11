@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FiPlusCircle } from 'react-icons/fi';
@@ -14,6 +14,8 @@ import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
+const object1 = { title: "Entrecôte", category: "Viande", describe: "Ici la description" };
+
 const firebaseApp = initializeApp({
 	apiKey: 'AIzaSyDYRZBURVTMEMq7bEYMqaTmhm6b5sHxJmw',
 
@@ -25,7 +27,7 @@ const firebaseApp = initializeApp({
 const db = getFirestore();
 
 const Initial = () => {
-	const [ data, setData ] = useState('');
+	const [ data, setData ] = useState(object1);
 	const [ imageSrc, setImageSrc ] = useState(); // form image source
 	const [ value, setValue ] = useState(''); // Value
 
@@ -35,20 +37,18 @@ const Initial = () => {
 	const [ FBtitle, setFBTitle ] = useState('');
 
 	const { register, handleSubmit, formState: { errors } } = useForm();
-	const onSubmit = (data) => console.log('data', data);
+	const onSubmit = (data) => setData(data);
 
 	useEffect(
 		() => {
-			if (data) {
+			if (data != object1) {
 				//form only
 				setTitle(data.title);
 				setCat(data.category);
 				setDesc(data.describe);
-				// console.log('image', imageSrc);
 				addTodo(title, category, describe); // great !
 			}
 		},
-		[ data ]
 	);
 
 	const handleImageSelect = (e) => {
@@ -97,18 +97,19 @@ const Initial = () => {
 
 		if (docSnap.exists()) {
 			list.push(docSnap.data());
-			setValue(list);
-			// setFBTitle(list[0].title)
+			const newlist = list[0];
+			setValue(newlist);
 		} else {
 			console.log('No such document!');
 		}
 	};
+	
 
 	useEffect(() => {
 		getUser();
 	}, []);
 
-	console.log('data', data);
+	console.log('data', value);
 
 	return (
 		<body className="doby">
@@ -130,13 +131,13 @@ const Initial = () => {
 								<h4 className="m-0 text-white p-3">Étape 1 : ajouter du contenu </h4>
 								{/* First card */}
 								<div className="col-3 text-center card">
-									{value ? (
+									{value != "" ? (
 										<div class="container">
 											<h3 className="m-0 text-success p-3">Titre</h3>
 											<InputGroup className="mb-3">
 												<InputGroup.Text id="basic-addon1">📌</InputGroup.Text>
 												<FormControl
-													placeholder={value[0].title}
+													
 													aria-label="Titre du menu"
 													aria-describedby="basic-addon1"
 													{...register('title')} // onChange={e=> this.setState({ val: e.target.value })}
@@ -146,7 +147,7 @@ const Initial = () => {
 											<InputGroup className="mb-3 mt-3">
 												<InputGroup.Text id="basic-addon1">📜</InputGroup.Text>
 												<FormControl
-													placeholder={value[0].category}
+													
 													aria-label="Username"
 													aria-describedby="basic-addon1"
 													{...register('category')} // onChange={e=> this.setState({ val: e.target.value })}
