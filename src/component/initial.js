@@ -8,6 +8,8 @@ import { Button } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import ImageUpload from 'image-upload-react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import {decode as base64_decode, encode as base64_encode} from 'base-64';
+// let decoded = base64_decode('YOUR_ENCODED_STRING');
 
 // Initialize Cloud Firestore through Firebase
 
@@ -30,6 +32,7 @@ const Initial = () => {
 	const [ data, setData ] = useState(object1);
 	const [ imageSrc, setImageSrc ] = useState(); // form image source
 	const [ value, setValue ] = useState(''); // Value
+	const [ encoded, setEncoded ] = useState(); // Value
 
 	const [ title, setTitle ] = useState(''); // title
 	const [ category, setCat ] = useState(''); // category
@@ -39,31 +42,47 @@ const Initial = () => {
 	const { register, handleSubmit, formState: { errors } } = useForm();
 	const onSubmit = (data) => setData(data);
 
+
+
+	const handleImageSelect = (e) => {
+		setImageSrc(URL.createObjectURL(e.target.files[0]));
+		// let based = base64_encode(imageSrc);
+		// setEncoded(based);
+		
+	};
+
 	useEffect(
 		() => {
-			if (data != object1) {
+			if (data != object1 && imageSrc) {
 				//form only
 				setTitle(data.title);
 				setCat(data.category);
 				setDesc(data.describe);
-				addTodo(title, category, describe); // great !
+				addTodo(title, category, describe, encoded); // great !
 			}
 		},
 	);
 
-	const handleImageSelect = (e) => {
-		setImageSrc(URL.createObjectURL(e.target.files[0]));
-	};
-
 	// write values to firebase database
 
 	const addTodo = async () => {
+
+		const response = await fetch(imageSrc);
+		const blob = await response.blob();
+		var reader = new FileReader();
+		reader.onload = () => {
+		   setEncoded(reader.result);
+		}
+		reader.readAsDataURL(blob);
+
 		await setDoc(doc(db, 'User', 'user000'), {
 			category: category,
 			title: title,
-			describe: describe
+			describe: describe,
+			image: encoded
 			//   imageURL: imageSrc,
 		});
+		
 	};
 
 	function getScrollHeight(elm) {
@@ -72,7 +91,7 @@ const Initial = () => {
 		elm._baseScrollHeight = elm.scrollHeight;
 		elm.value = savedValue;
 	}
-
+console.log(encoded);
 	function onExpandableTextareaInput({ target: elm }) {
 		// make sure the input event originated from a textarea and it's desired to be auto-expandable
 		if (!elm.classList.contains('autoExpand') || !elm.nodeName == 'TEXTAREA') return;
@@ -108,8 +127,6 @@ const Initial = () => {
 	useEffect(() => {
 		getUser();
 	}, []);
-
-	console.log('data', value);
 
 	return (
 		<body className="doby">
