@@ -1,16 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import Initial from './component/initial.js';
-import Start from './component/start.js';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import Allproducts from './component/Allproducts';
+import Model from './component/Model';
+import Start from './navigation/Start';
+import Initial from './component/initial';
+import NimBuzz from './exercice/NimBuzz'
+
+const userInfosContext = {
+	name: 'jéjé',
+	birthDate: '26/11/1985'
+};
+export const UserContext = React.createContext(userInfosContext.birthDate);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Initial />
-  </React.StrictMode>,
-  document.getElementById('root')
+	<UserContext.Provider value={userInfosContext}>
+		<React.StrictMode>
+			<BrowserRouter>
+				<Routes>
+					<Route exact path="/" element={<Model />} />
+					<Route path="/Start" element={<Start />} />
+					<Route path="/Initial" element={<Initial />} />
+					<Route path="/NimBuzz" element={<NimBuzz />} />
+				</Routes>
+			</BrowserRouter>
+		</React.StrictMode>
+	</UserContext.Provider>,
+	document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
