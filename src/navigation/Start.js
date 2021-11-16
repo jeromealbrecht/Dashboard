@@ -39,7 +39,6 @@ const Start = (props) => {
 	const [ category, setCat ] = useState(); //Category
 	const [ genre, setGenre ] = useState(); //genre
 
-console.log(selectedOption);
 	// when data
 	useEffect(
 		() => {
@@ -59,7 +58,7 @@ console.log(selectedOption);
 		reader.readAsDataURL(blob);
 		// set doc
 		if (data) {
-			if (selectedOption){
+			if (selectedOption) {
 				console.log('naturelle', genre, title);
 				await setDoc(
 					doc(db, selectedOption.value, title),
@@ -72,7 +71,6 @@ console.log(selectedOption);
 					[ data, selectedOption, addTodo ]
 				);
 			}
-	
 		}
 		setData();
 	};
