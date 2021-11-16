@@ -83,7 +83,7 @@ const AuthForm = (props) => {
 			}, []);
 	}
 
-	const { register, handleSubmit, watch, formState: { errors } } = useForm();
+	const { register, handleSubmit, formState: { errors } } = useForm();
 	const onSubmit = (data) => setDatas(data);
 
 	return (

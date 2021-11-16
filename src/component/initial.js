@@ -17,8 +17,6 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-// const object1 = { title: 'Entrecôte', category: 'Viande', describe: 'Ici la description' };
-
 const firebaseApp = initializeApp({
 	apiKey: 'AIzaSyDYRZBURVTMEMq7bEYMqaTmhm6b5sHxJmw',
 

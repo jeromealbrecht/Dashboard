@@ -7,7 +7,8 @@ import Allproducts from './component/Allproducts';
 import Model from './component/Model';
 import Start from './navigation/Start';
 import Initial from './component/initial';
-import NimBuzz from './exercice/NimBuzz'
+import NimBuzz from './exercice/NimBuzz';
+import Hello from './component/hello';
 
 const userInfosContext = {
 	name: 'jéjé',

@@ -27,7 +27,22 @@ const db = getFirestore();
 const auth = getAuth();
 
 const StepOne = (props) => {
-	const { data, setData, imageSrc, setImageSrc, selectedOption, setSelectedOption } = props;
+	const { data, 
+		setData, 
+		imageSrc, 
+		setImageSrc, 
+		selectedOption, 
+		setSelectedOption, 
+		title, 
+		setTitle, 
+		describe,
+		setDesc,
+		category,
+		setCat,
+		genre,
+		setGenre
+	   } = props;
+
 	const [ adUser, setadUser ] = useState(''); // from props of Is Connected
 	const [ loadata, setLoadata ] = useState();
 	const [ products, setProducts ] = useState();
@@ -62,8 +77,10 @@ const StepOne = (props) => {
 	};
 
 	useEffect(() => {
+		document.title = "L'adresse"
 		getUser();
 	}, []);
+	
 
 	
 	return (
@@ -73,32 +90,33 @@ const StepOne = (props) => {
 			</div>
 		<div className="col-11 row m-0">
 			<IsConnected {...props} adUser={adUser} setadUser={setadUser} />
-			<h1 className="m-0 text-white text-center mt-5">Bienvenue sur votre Dashboard, {adUser.displayName}</h1>
+			<h1 className="m-0 text-white text-center mt-5 mb-3">Bienvenue sur votre Dashboard, {adUser.displayName}</h1>
 			<h4 className="m-0 text-white p-3">Étape 1 : ajouter du contenu </h4>
 			{/* First card */}
 			<div className="col-3 text-center card">
-				{loadata ? (
+				{products ? (
 					<div className="container">
 						<h3 className="m-0 text-success p-3">Titre</h3>
 						<InputGroup className="mb-3">
 							<InputGroup.Text id="basic-addon1">📌</InputGroup.Text>
 							<FormControl
-								placeholder={loadata.title}
+								placeholder={products.title}
 								aria-label="Titre du menu"
 								aria-describedby="basic-addon1"
-								{...register('title')} // onChange={e=>
-								// this.setState({ val: e.target.value })}
+								{...register('title')} 
+								onChange={e=> setTitle(e.target.value)} //setdata title
 							/>
 						</InputGroup>
 						<h3 className="m-0 text-success">Catégorie</h3>
 						<InputGroup className="mb-3 mt-3">
 							<InputGroup.Text id="basic-addon1">📜</InputGroup.Text>
 							<FormControl
-								placeholder={loadata.category}
+								placeholder={products.category ?? 'ex: Viandes, Poissons'}
 								aria-label="Username"
 								aria-describedby="basic-addon1"
 								{...register('category')} // onChange={e=>
-								// 	this.setState({ val: e.target.value })}
+								onChange={e=> setCat(e.target.value)} //setdata title
+
 							/>
 						</InputGroup>
 					</div>
@@ -108,22 +126,24 @@ const StepOne = (props) => {
 						<InputGroup className="mb-3">
 							<InputGroup.Text id="basic-addon">📌</InputGroup.Text>
 							<FormControl
-								placeholder="Titre"
+								placeholder="ex: Tartare de Saumon"
 								aria-label="Titre du menu"
 								aria-describedby="basic-addon1"
-								{...register('title')} // onChange={e=>
-								// this.setState({ val: e.target.value })}
+								{...register('title')}
+								onChange={e=> setTitle(e.target.value)} //setdata title
+
 							/>
 						</InputGroup>
 						<h3 className="m-0 text-success">Catégorie</h3>
 						<InputGroup className="mb-3 mt-3">
 							<InputGroup.Text id="basic-addon2">📜</InputGroup.Text>
 							<FormControl
-								placeholder="Catégorie"
+								placeholder="ex: Viandes, Poissons"
 								aria-label="Username"
 								aria-describedby="basic-addon1"
 								{...register('category')} // onChange={e=>
-								// this.setState({ val: e.target.value })}
+								onChange={e=> setCat(e.target.value)} //setdata category
+
 							/>
 						</InputGroup>
 					</div>
@@ -140,6 +160,7 @@ const StepOne = (props) => {
 							data-min-rows="3"
 							placeholder={loadata.describe}
 							{...register('describe')}
+							onChange={e=> setDesc(e.target.value)} //setdata desc
 							autoFocus
 						/>
 					) : (
@@ -149,6 +170,7 @@ const StepOne = (props) => {
 							data-min-rows="3"
 							placeholder={'Entrez la description'}
 							{...register('describe')}
+							onChange={e=> setDesc(e.target.value)} //setdata desc
 							autoFocus
 						/>
 					)}
@@ -170,12 +192,23 @@ const StepOne = (props) => {
 			</div>
             {/* Second Steps */}
 			<div className="col-3" />
-			<h4 className="m-0 text-white p-3 mt-5">Étape 2 : Choisir la catégorie & valider </h4>
+			<h4 className="m-0 text-white p-3 mt-5">Étape 2 : Choisir la catégorie et valider </h4>
 			{/* First card */}
 			<div className="col-3 text-center card">
 				<div class="container">
-					<h3 className="m-0 text-success p-3">Catégorie</h3>
-					<Select selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
+					<h3 className="m-0 text-success p-3">Genre</h3>
+					{/* <InputGroup className="mb-3">
+							<InputGroup.Text id="basic-addon">🍽️</InputGroup.Text>
+							<FormControl
+								placeholder="ex: Repas"
+								aria-label="Titre du menu"
+								aria-describedby="basic-addon1"
+								{...register('genre')}
+								onChange={e=> setGenre(e.target.value)} //setdata genre
+
+							/>
+						</InputGroup> */}
+						<Select selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
 				</div>
 			</div>
 			<div className="col-3 offset-1 text-center card">

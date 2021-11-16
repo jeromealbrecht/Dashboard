@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card } from 'react-bootstrap';
 import '../App.css';
@@ -12,6 +12,10 @@ function Model(props) {
 	const [ adUser, setadUser ] = useState('');
 // console.log('adUser de Model' , adUser);
 	var ladate = new Date();
+	
+	useEffect(() => {
+		document.title = "L'adresse"
+	 }, []);
 
 	const user = useContext(UserContext);
 

@@ -21,7 +21,7 @@ const IsConnected = (props) => {
 		}
 	});
 
-	return <isConnected {...props} adUser={adUser} setadUser={setadUser} />;
+	return ''
 };
 
 export default IsConnected;

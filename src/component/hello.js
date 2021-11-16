@@ -5,6 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { doc, getDoc } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import Divider from '@material-ui/core/Divider';
+import IsConnected from '../controller/IsConnected';
+import { Card } from 'react-bootstrap';
+import AdressImg from '../images/adresse-exterieur.jpg';
 
 const firebaseApp = initializeApp({
 	apiKey: 'AIzaSyDYRZBURVTMEMq7bEYMqaTmhm6b5sHxJmw',
@@ -18,81 +22,76 @@ const db = getFirestore();
 
 // import { FiPlusCircle } from 'react-icons/fi';
 
-const Hello = () => {
-	const [ loadata, setLoadata ] = useState();
+const Hello = (props) => {
+	var ladate = new Date();
+	const [ date, setDate ] = useState(ladate.getDate() + '/' + (ladate.getMonth() + 1) + '/' + ladate.getFullYear());
+	const [ hour, setHour ] = useState(ladate.getHours().toString() + 'h et ' + ladate.getMinutes() + ' minutes');
 
-	// Ici je veux retourner le produit (lecture)
-	const getUser = async () => {
-		const list = [];
-		const docRef = doc(db, 'User', 'user000');
-		const docSnap = await getDoc(docRef);
+	const [ loading, setLoading ] = useState();
+	const [ data, setData ] = useState();
 
-		if (docSnap.exists()) {
-			list.push(docSnap.data());
-			const newlist = list[0];
-			setLoadata(newlist);
-		} else {
-			console.log('No such document!');
-		}
-	};
+	const [ adUser, setadUser ] = useState('');
 
 	useEffect(() => {
-		getUser();
+		fetch(
+			'https://api.openweathermap.org/data/2.5/onecall?lat=49.894067&lon=2.295753&lang=fr&units=metric&exclude=alerts&appid=cdbad52d9046fd36ad8b43226e0b0e50'
+		)
+			//
+
+			.then((response) => response.json())
+			.then((json) => setData(json))
+			.catch((error) => console.error(error))
+			.finally(() => setLoading(false));
 	}, []);
 
+	console.log(data);
+	// Ici je veux retourner le produit (lecture)
+	const br = `\n`;
 	return (
-		<div className="container-fluid bgColor" style={{ height: '100vh' }}>
+		<div className="container-fluid css-selector" style={{ height: '100vh' }}>
 			<div className="col-12">
-				<div className="row">
-				<div className="col-md-1 offset-1 cardColor mt-5 text-center text-white size">
-					<h4 className="mt-3 mb-4"> Bienvenue </h4>
-					<div className="round">
-						<FiPlusCircle size={40} />
-					</div>
-					<p>Ajouter menu</p>
+				<IsConnected {...props} adUser={adUser} setadUser={setadUser} />
+				<div className="row d-flex justify-content-evenly">
+					<div className="col-3 m-0 p-0 justify-content-center mt-3">
+						<div
+							className="col-12"
+							style={{ width: 250, height: 400, backgroundColor: '#6B365F', borderRadius: 5 }}
+						>
+							<h1 className="Raleway text-white text-center pt-3" style={{ fontSize: 25 }}>
+								L'adresse
+							</h1>
+							<h4 className="Raleway text-white text-center">Bienvenue, {adUser.displayName}</h4>
+							<h5 className="Raleway text-white text-center">Nous sommes le {date},</h5>
+							<h5 className="Raleway text-white text-center">
+								dehors il fait {data ? data.current.temp : ''} ° C
+							</h5>
 
-				</div>
-					{loadata ? (
-						<div className="col-3 justify-content-center">
-							<div
-								className="offset-1 justify-content-center"
-								style={{
-									position: 'absolute',
-									width: 250,
-									height: 350,
-									minHeight: 425,
-									backgroundColor: 'white',
-									marginTop: 5,
-									justifySelf: 'center'
-								}}
-							>
-								<p style={{ position: 'absolute', padding: 8 }}>{loadata.title}</p>
-								<img
-									src={loadata.image}
-									alt="image"
+							<div className="col-12 bg-warning d-flex justify-content-center bg-warning mt-3">
+								<Card.Img
+									src={AdressImg}
 									style={{
-										position: 'absolute',
-										justifyContent: 'center',
-										width: '100%',
-										padding: 2,
-										marginTop: 50,
-										borderRadius: 15
+										marginTop: 5,
+										width: 225,
+										position: 'absolute'
 									}}
+									alt="Card image"
 								/>
-								<p style={{ position: 'absolute', padding: 4, marginTop: 300 }}>{loadata.category}</p>
-								<p style={{ position: 'absolute', padding: 4, marginTop: 325 }} numberoflines={3}>
-									{loadata.describe}.
-								</p>
 							</div>
 						</div>
-						
-					) : (
-						<div className="col-3 justify-content-center">
-							<div className="offset-1" style={{ width: 250, height: 400, backgroundColor: 'white' }}>
-								<p style={{ position: 'absolute', padding: 8 }}>Pas de données</p>
-							</div>
-						</div>
-					)}
+					</div>
+					<div className="col-9 m-0 p-0 bg-warning mt-3">
+						<Card.Img
+							src={AdressImg}
+							style={{
+								marginTop: 0,
+								width: '55%',
+								borderBottomRightRadius: 100,
+								borderBottomLeftRadius: 100,
+								position: 'absolute'
+							}}
+							alt="Card image"
+						/>
+					</div>
 				</div>
 			</div>
 		</div>

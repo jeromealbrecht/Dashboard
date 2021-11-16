@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { InputGroup, FormControl } from 'react-bootstrap';
-// import ImageUpload from 'image-upload-react';
-// import { useForm } from 'react-hook-form';
 import StepOne from '../component/StepOne';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { collection, query, where, getDocs } from 'firebase/firestore';
@@ -34,26 +31,21 @@ const Start = (props) => {
 	const [ loadata, setLoadata ] = useState();
 	const [ imageSrc, setImageSrc ] = useState(); // form image source
 	const [ redirect, setRedirect ] = useState(false);
-	const [ title, setTitle ] = useState(); //Title
-	const [ category, setCat ] = useState(); //Category
-	const [ describe, setDesc ] = useState(); //Describe
+
 	const [ encoded, setEncoded ] = useState(); // Value img encoded
 	const [ selectedOption, setSelectedOption ] = useState(); // props from select component
+	const [ title, setTitle ] = useState(); // title form
+	const [ describe, setDesc ] = useState(); //Describe
+	const [ category, setCat ] = useState(); //Category
+	const [ genre, setGenre ] = useState(); //genre
 
-	console.log(selectedOption);
-
+console.log(selectedOption);
 	// when data
 	useEffect(
 		() => {
-			if (data) {
-				//form only
-				setTitle(data.title);
-				setCat(data.category);
-				setDesc(data.describe);
-				addTodo(title, category, describe, encoded); // great !
-			}
+			addTodo(data, title, category, describe, encoded, selectedOption); // great !
 		},
-		[ data, title, category, describe, encoded ]
+		[ data, title, category, describe, encoded, selectedOption ]
 	);
 
 	// write values to firebase database
@@ -67,19 +59,20 @@ const Start = (props) => {
 		reader.readAsDataURL(blob);
 		// set doc
 		if (data) {
-			if (selectedOption) {
-				console.log('naturelle', selectedOption);
+			if (selectedOption){
+				console.log('naturelle', genre, title);
 				await setDoc(
-					doc(db, 'User', selectedOption.value),
+					doc(db, selectedOption.value, title),
 					{
 						category: category,
 						title: title,
 						describe: describe,
 						image: encoded
 					},
-					[ data, selectedOption ]
+					[ data, selectedOption, addTodo ]
 				);
 			}
+	
 		}
 		setData();
 	};
@@ -100,7 +93,6 @@ const Start = (props) => {
 				<div class="col-md-12">
 					<IsConnected {...props} adUser={adUser} setadUser={setadUser} />
 					{adUser ? (
-						// <h1 className="text-center text-white mt-5">Bienvenue {adUser.displayName}</h1>
 						<StepOne
 							data={data}
 							setData={setData}
@@ -110,6 +102,14 @@ const Start = (props) => {
 							setLoadata={setLoadata}
 							selectedOption={selectedOption}
 							setSelectedOption={setSelectedOption}
+							title={title}
+							setTitle={setTitle}
+							describe={describe}
+							setDesc={setDesc}
+							category={category}
+							setCat={setCat}
+							genre={genre}
+							setGenre={setGenre}
 						/>
 					) : (
 						// setRedirect(true)
