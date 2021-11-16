@@ -15,11 +15,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseApp = initializeApp({
-	apiKey: 'AIzaSyDYRZBURVTMEMq7bEYMqaTmhm6b5sHxJmw',
-
-	authDomain: 'backad-59c60.firebaseapp.com',
-
-	projectId: 'backad-59c60'
+	//config
 });
 const db = getFirestore();
 
