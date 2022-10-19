@@ -32,11 +32,11 @@ const AuthForm = (props) => {
 			displayName: 'Tony'
 		})
 			.then(() => {
-				alert('mise à jour ok');
+				alert('Mise à jour ok');
 				// ...
 			})
 			.catch((error) => {
-				alert('bordelent');
+				alert('Erreur');
 
 				// ...
 			});
